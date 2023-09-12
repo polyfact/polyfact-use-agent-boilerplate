@@ -1,6 +1,4 @@
-# `useAgent` Polyfact Hook
-
-The `useAgent` hook simplifies the interaction between your React application and the Polyfact agent.
+# `useAgent` React Boilerplate
 
 ## Preliminary Steps
 
