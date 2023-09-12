@@ -45,7 +45,7 @@ Before you can use the `useAgent` and `usePolyfact` hooks in your project, you n
 Run the following command in your project directory:
 
 ```bash
-npm install polyfact/hooks --save
+npm install polyfact --save
 ```
 
 ### Using yarn:
@@ -53,7 +53,7 @@ npm install polyfact/hooks --save
 If you prefer yarn, run this command instead:
 
 ```bash
-yarn add polyfact/hooks
+yarn add polyfact
 ```
 
 After successfully installing the package, you're ready to import and use the hooks in your application.
