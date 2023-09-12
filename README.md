@@ -1,21 +1,62 @@
-# `useAgent` Polyfact hook
+# `useAgent` Polyfact Hook
 
 The `useAgent` hook simplifies the interaction between your React application and the Polyfact agent.
 
+## Preliminary Steps
+
+### 1. Login to Polyfact
+
+Before using the `useAgent` hook, you need to be authenticated on the Polyfact platform. The `usePolyfact` hook provides a convenient `login` method to assist with this:
+
+```javascript
+const { login } = usePolyfact(options);
+```
+
+To allow a user to login with their preferred provider (e.g., Google), you can provide a button:
+
+```javascript
+<button onClick={() => login({ provider: "google" })}>Login with Google</button>
+```
+
+### 2. Obtain a Project ID
+
+After logging in to Polyfact:
+
+1. Navigate to the Polyfact dashboard at [app.polyfact.com](https://app.polyfact.com).
+2. Create a new project or select an existing one.
+3. Retrieve the `PROJECT_ID` from the project details.
+
+This `PROJECT_ID` should be provided when initializing the `usePolyfact` hook:
+
+```javascript
+const { polyfact, login, loading } = usePolyfact({
+  project: "<PROJECT_ID>",
+});
+```
+
+Certainly! You can add more detail to make the installation steps clearer by providing the actual command-line instructions for both npm and yarn. Here's how you could enhance the "Installation" section:
+
 ## Installation
 
-Firstly, ensure that you have the required `polyfact` library installed in your project.
-yarn:
+Before you can use the `useAgent` and `usePolyfact` hooks in your project, you need to install the `polyfact` library. You can do so using either npm or yarn:
 
-```
-yarn add polyfact
+### Using npm:
+
+Run the following command in your project directory:
+
+```bash
+npm install polyfact/hooks --save
 ```
 
-or npm:
+### Using yarn:
 
+If you prefer yarn, run this command instead:
+
+```bash
+yarn add polyfact/hooks
 ```
-npm i polyfact
-```
+
+After successfully installing the package, you're ready to import and use the hooks in your application.
 
 ## Usage
 
@@ -33,7 +74,7 @@ When using the `useAgent` hook, it should be initialized with the specific model
 
 ```javascript
 const { start, stop } = useAgent({
-  model: "gpt-4",
+  model: "gpt-4", // prefered gpt-4 for better stability.
   provider: "openai",
 });
 ```
@@ -63,7 +104,7 @@ await start(task, (step: string, res: string) => {
 
 ### Stopping the agent
 
-To stop the agent in the middle of its task:
+To stop the agent (it completes its current task before):
 
 ```javascript
 stop();
@@ -100,9 +141,3 @@ try {
     setError(e.message);
 }
 ```
-
-When integrating into your UI, ensure you handle the various states an agent can be in, like loading, error, progress, etc.
-
-## Conclusion
-
-The `useAgent` hook offers a streamlined way to integrate Polyfact agents into your React applications. By following this guide, you can start, monitor, and control these agents, enhancing your application with their capabilities.
