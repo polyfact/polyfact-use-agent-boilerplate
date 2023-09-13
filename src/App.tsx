@@ -15,7 +15,7 @@ import { TDefinitionAction } from "./useAgent";
 export default function App() {
   // Hooks to interact with Polyfact and Agent
   const { polyfact, login, loading } = usePolyfact({
-    project: "ecd1afb6-4756-42c3-ac6f-7693afa3038b", // You get one from https://app.polyfact.com
+    project: "<YOUR_POLYFACT_PROJECT_ID>", // You get one from https://app.polyfact.com
   });
 
   const search = async (request: string) => {
