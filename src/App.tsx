@@ -2,6 +2,8 @@ import "./App.css";
 import "bulma/css/bulma.min.css";
 import { useState } from "react";
 import { usePolyfact, useAgent } from "polyfact/hooks";
+import { examples } from "./examples";
+import { TDefinitionAction } from "./useAgent";
 
 /**
  * Main App Component
@@ -13,9 +15,39 @@ import { usePolyfact, useAgent } from "polyfact/hooks";
 export default function App() {
   // Hooks to interact with Polyfact and Agent
   const { polyfact, login, loading } = usePolyfact({
-    project: "<PROJECT_ID>", // You get one from https://app.polyfact.com
+    project: "ecd1afb6-4756-42c3-ac6f-7693afa3038b", // You get one from https://app.polyfact.com
   });
-  const { start, stop } = useAgent({
+
+  const search = async (request: string) => {
+    const page = await polyfact?.generate(request, {
+      web: true,
+    });
+
+    return page;
+  };
+
+  const summarize = async (content: string) => {
+    const page = await polyfact?.generate(`summarize this text : ${content}`);
+
+    return page;
+  };
+
+  const actions: TDefinitionAction[] = [
+    {
+      name: "Search",
+      description: "Use this action if you have to search on the web",
+      callback: search,
+      example: examples[0],
+    },
+    {
+      name: "summarize",
+      description: "Use this action if you have to summarize a text",
+      callback: summarize,
+      example: examples[1],
+    },
+  ];
+
+  const { start, stop } = useAgent(actions, {
     model: "gpt-4", // gpt-4 model for better stability
     provider: "openai",
   });
