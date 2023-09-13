@@ -77,6 +77,62 @@ const { start, stop } = useAgent({
 });
 ```
 
+### `Actions`
+
+To enable the agent to perform specific tasks, you need to define the `actions` that the agent will use. Each action is represented as an object with a `name`, `description`, `callback`, and `example`, all are required.
+
+1. **Define the Actions**
+
+   Create an array of actions. Each action has the following format:
+
+   ```js
+   {
+     name: string, // Action name 
+     description: string, // Description of what the action does 
+     callback: Function, // This is the function that'll be executed for this action
+     example: {
+       question: string,
+        process: [
+         {
+           thought: string,
+           action: string,
+           observation: string,
+         }
+       
+     }
+   }
+   ```
+
+   Here's a snippet from our earlier code:
+
+   ```ts
+   const summarize = async (content: string) => {
+       // ...implementation
+   };
+
+   const actions: DefinitionAction[] = [
+       {
+           name: "summarize",
+           description: "Use this action if you have to summarize a text",
+           callback: summarize,
+           example: examples[1],
+       },
+   ];
+   ```
+
+2. **Pass the Actions to useAgent Hook**
+
+   When initializing the `useAgent` hook, pass the `actions` array as a parameter:
+
+   ```js
+   const { start, stop } = useAgent(actions, {
+       model: "gpt-4",
+       provider: "openai",
+   });
+   ```
+
+###
+
 ### Starting the agent
 
 To start an agent:
