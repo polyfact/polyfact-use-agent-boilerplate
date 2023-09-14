@@ -2,9 +2,9 @@
 
 ## Preliminary Steps
 
-### 1. Login to Polyfact
+### 1. Login to PolyFact
 
-Before using the `useAgent` hook, you need to be authenticated on the Polyfact platform. The `usePolyfact` hook provides a convenient `login` method to assist with this:
+Before using the `useAgent` hook, you need to be authenticated on the PolyFact platform. The `usePolyfact` hook provides a convenient `login` method to assist with this:
 
 ```javascript
 const { login } = usePolyfact(options);
@@ -18,9 +18,9 @@ To allow a user to login with their preferred provider (e.g., Google), you can p
 
 ### 2. Obtain a Project ID
 
-After logging in to Polyfact:
+After logging in to PolyFact:
 
-1. Navigate to the Polyfact dashboard at [app.polyfact.com](https://app.polyfact.com).
+1. Navigate to the PolyFact dashboard at [app.polyfact.com](https://app.polyfact.com).
 2. Create a new project or select an existing one.
 3. Retrieve the `PROJECT_ID` from the project details.
 
