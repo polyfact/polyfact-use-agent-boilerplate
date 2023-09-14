@@ -32,7 +32,7 @@ const { polyfact, login, loading } = usePolyfact({
 });
 ```
 
-Certainly! You can add more detail to make the installation steps clearer by providing the actual command-line instructions for both npm and yarn. Here's how you could enhance the "Installation" section:
+You can add more detail to make the installation steps clearer by providing the actual command-line instructions for both npm and yarn. Here's how you could enhance the "Installation" section:
 
 ## Installation
 
