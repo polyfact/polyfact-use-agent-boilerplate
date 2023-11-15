@@ -1,9 +1,8 @@
 import "./App.css";
 import "bulma/css/bulma.min.css";
 import { useState } from "react";
-import { usePolyfact, useAgent } from "polyfact/hooks";
+import { usePolyfire, useAgent, DefinitionAction } from "polyfire-js/hooks";
 import { examples } from "./examples";
-import { TDefinitionAction } from "./useAgent";
 
 /**
  * Main App Component
@@ -14,12 +13,13 @@ import { TDefinitionAction } from "./useAgent";
  */
 export default function App() {
   // Hooks to interact with Polyfact and Agent
-  const { polyfact, login, loading } = usePolyfact({
-    project: "<YOUR_POLYFACT_PROJECT_ID>", // You get one from https://app.polyfact.com
-  });
+  const {
+    auth: { login, status },
+    models: { generate },
+  } = usePolyfire();
 
   const search = async (request: string) => {
-    const page = await polyfact?.generate(request, {
+    const page = await generate(request, {
       web: true,
     });
 
@@ -27,12 +27,12 @@ export default function App() {
   };
 
   const summarize = async (content: string) => {
-    const page = await polyfact?.generate(`summarize this text : ${content}`);
+    const page = await generate(`summarize this text : ${content}`);
 
     return page;
   };
 
-  const actions: TDefinitionAction[] = [
+  const actions: DefinitionAction[] = [
     {
       name: "Search",
       description: "Use this action if you have to search on the web",
@@ -61,13 +61,16 @@ export default function App() {
    * Starts the agent with the given task
    */
   const startAgent = () => {
-    if (polyfact && start) {
+    if (start) {
       const getResponse = async () => {
         try {
           setIsStarted(true);
 
           await start(task, (step: string, res: string) => {
-            setProgress((prev) => [...prev, { step, res }]);
+            setProgress((prev: { step: string; res: string }[]) => [
+              ...prev,
+              { step, res },
+            ]);
           });
         } catch (e: any) {
           console.error(e);
@@ -82,7 +85,7 @@ export default function App() {
    * Stops the agent and clears its progress
    */
   const stopAgent = () => {
-    if (polyfact && stop) {
+    if (stop) {
       stop();
       setProgress([]);
       setIsStarted(false);
@@ -100,8 +103,8 @@ export default function App() {
   };
 
   const loginButton = login && (
-    <button onClick={() => login({ provider: "google" })} className="login-btn">
-      Login with Google
+    <button onClick={() => login({ provider: "github" })} className="login-btn">
+      Login with Github
     </button>
   );
 
@@ -173,19 +176,32 @@ export default function App() {
     );
   }
 
-  return (
-    <main className="container">
-      <div className="columns full-height is-vcentered">
-        {login
-          ? loginButton
-          : !loading
-          ? progress?.length > 0
+  if (status === "loading") {
+    return <div>"Loading..."</div>;
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <main className="container">
+        <div className="columns full-height is-vcentered">{loginButton}</div>
+      </main>
+    );
+  }
+
+  if (status === "authenticated") {
+    // Render the main UI when authenticated
+    return (
+      <main className="container">
+        <div className="columns full-height is-vcentered">
+          {progress?.length > 0
             ? error
               ? errorDisplay
               : agentDisplay
-            : taskInputDisplay
-          : "Loading..."}
-      </div>
-    </main>
-  );
+            : taskInputDisplay}
+        </div>
+      </main>
+    );
+  }
+
+  return null; // Return null for any other status
 }
