@@ -1,197 +1,68 @@
-# `useAgent` React Boilerplate
+# Polyfire Agent React TypeScript Boilerplate
 
-## Preliminary Steps
+This project is a boilerplate setup for building React applications using TypeScript. It includes essential dependencies and configurations to kickstart the development of a Polyfire agent application.
 
-### 1. Login to PolyFact
+## Getting Started
 
-Before using the `useAgent` hook, you need to be authenticated on the PolyFact platform. The `usePolyfact` hook provides a convenient `login` method to assist with this:
-
-```javascript
-const { login } = usePolyfact(options);
-```
-
-To allow a user to login with their preferred provider (e.g., Google), you can provide a button:
-
-```javascript
-<button onClick={() => login({ provider: "google" })}>Login with Google</button>
-```
-
-### 2. Obtain a Project ID
-
-After logging in to PolyFact:
-
-1. Navigate to the PolyFact dashboard at [app.polyfact.com](https://app.polyfact.com).
-2. Create a new project or select an existing one.
-3. Retrieve the `PROJECT_ID` from the project details.
-
-This `PROJECT_ID` should be provided when initializing the `usePolyfact` hook:
-
-```javascript
-const { polyfact, login, loading } = usePolyfact({
-  project: "<PROJECT_ID>",
-});
-```
-
-You can add more detail to make the installation steps clearer by providing the actual command-line instructions for both npm and yarn. Here's how you could enhance the "Installation" section:
-
-## Installation
-
-Before you can use the `useAgent` and `usePolyfact` hooks in your project, you need to install the `polyfact` library. You can do so using either npm or yarn:
-
-### Using npm:
-
-Run the following command in your project directory:
+To get started with this boilerplate, clone the repository to your local machine.
 
 ```bash
-npm install polyfact --save
+git clone https://github.com/your-repository/polyfire-agent-react-ts-boilerplate.git
+cd polyfire-agent-react-ts-boilerplate
 ```
 
-### Using yarn:
+### Installation
 
-If you prefer yarn, run this command instead:
+Install the necessary dependencies by running:
 
 ```bash
-yarn add polyfact
+npm install
 ```
 
-After successfully installing the package, you're ready to import and use the hooks in your application.
+### Running the Application
 
-## Usage
+To start the development server:
 
-### Importing the hook
-
-You can import `useAgent` like any other named export:
-
-```javascript
-import { useAgent } from "polyfact/hooks";
+```bash
+npm start
 ```
 
-### Initializing the hook
+This command runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser. The page will reload when you make changes.
 
-When using the `useAgent` hook, it should be initialized with the specific model and provider:
+### Building for Production
 
-```javascript
-const { start, stop } = useAgent({
-  model: "gpt-4", // prefered gpt-4 for better stability.
-  provider: "openai",
-});
+To build the app for production, run:
+
+```bash
+npm run build
 ```
 
-### `Actions`
+This command correctly bundles React in production mode and optimizes the build for the best performance. The build is minified, and the filenames include hashes.
 
-To enable the agent to perform specific tasks, you need to define the `actions` that the agent will use. Each action is represented as an object with a `name`, `description`, `callback`, and `example`, all are required.
+### Running Tests
 
-1. **Define the Actions**
+Execute tests using the following command:
 
-   Create an array of actions. Each action has the following format:
-
-   ```js
-   {
-     name: string, // Action name 
-     description: string, // Description of what the action does 
-     callback: Function, // This is the function that'll be executed for this action
-     example: {
-       question: string,
-        process: [
-         {
-           thought: string,
-           action: string,
-           observation: string,
-         }
-       
-     }
-   }
-   ```
-
-   Here's a snippet from our earlier code:
-
-   ```ts
-   const summarize = async (content: string) => {
-       // ...implementation
-   };
-
-   const actions: DefinitionAction[] = [
-       {
-           name: "summarize",
-           description: "Use this action if you have to summarize a text",
-           callback: summarize,
-           example: examples[1],
-       },
-   ];
-   ```
-
-2. **Pass the Actions to useAgent Hook**
-
-   When initializing the `useAgent` hook, pass the `actions` array as a parameter:
-
-   ```js
-   const { start, stop } = useAgent(actions, {
-       model: "gpt-4",
-       provider: "openai",
-   });
-   ```
-
-###
-
-### Starting the agent
-
-To start an agent:
-
-1. Define the task you want the agent to perform. (E.g., "How to make paw paw fruit jam?")
-2. Use the `start` function returned by the `useAgent` hook.
-
-```javascript
-const startAgent = () => {
-  if (polyfact && start) {
-    start(task, callback);
-  }
-};
+```bash
+npm test
 ```
 
-**Callback**: It's a function that captures the agent's progress. In our example, as the agent makes progress, the steps and results are updated:
+This launches the test runner in the interactive watch mode.
 
-```javascript
-await start(task, (step: string, res: string) => {
-  setProgress((prev) => [...prev, { step, res }]);
-});
+### Ejecting Configuration
+
+**Note**: This is a one-way operation. Once you `eject`, you can’t go back!
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+```bash
+npm run eject
 ```
 
-### Stopping the agent
+## Contributing
 
-To stop the agent (it completes its current task before):
+Contributions to improve this boilerplate are welcome. Please ensure to follow the guidelines and coding standards while making changes or adding new features.
 
-```javascript
-stop();
-```
+## License
 
-For instance, in the `stopAgent` function:
-
-```javascript
-const stopAgent = () => {
-  if (polyfact && stop) {
-    stop();
-  }
-};
-```
-
-### Handling results
-
-As the agent processes the task, the callback you passed to the `start` method will be called with the current `step` and `result`. You can handle them accordingly, like adding them to a progress list:
-
-```javascript
-setProgress((prev) => [...prev, { step, res }]);
-```
-
-### Error Handling
-
-Always account for potential errors when working with external services:
-
-```javascript
-try {
-    setIsStarted(true);
-    await start(task, callback);
-} catch (e: any) {
-    console.error(e);
-    setError(e.message);
-}
-```
+This project is licensed under the [MIT License](LICENSE).
